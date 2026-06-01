@@ -1,5 +1,5 @@
 CLANG ?= clang
-CFLAGS := -O2 -g -Wall -Werror $(CFLAGS)
+CFLAGS := -O2 -g -Wall -Werror -Wno-unknown-warning-option -Wno-default-const-init-unsafe -Wno-default-const-init-var-unsafe $(CFLAGS)
 
 ifeq (,$(shell which goimports))
 $(shell go install golang.org/x/tools/cmd/goimports@latest)
