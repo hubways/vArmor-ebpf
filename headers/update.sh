@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
 # Version of libbpf to fetch headers from
-LIBBPF_VERSION=1.1.0
+LIBBPF_VERSION=1.7.0
 
 # The headers we want
 prefix=libbpf-"$LIBBPF_VERSION"
 headers=(
     "$prefix"/LICENSE.BSD-2-Clause
+    "$prefix"/src/bpf_core_read.h
     "$prefix"/src/bpf_endian.h
     "$prefix"/src/bpf_helper_defs.h
     "$prefix"/src/bpf_helpers.h
