@@ -1,5 +1,5 @@
 CLANG ?= clang
-CFLAGS := -O2 -g -Wall -Werror $(CFLAGS)
+CFLAGS := -O2 -g -Wall -Werror -Wno-unknown-warning-option -Wno-default-const-init-unsafe -Wno-default-const-init-var-unsafe $(CFLAGS)
 
 ifeq (,$(shell which goimports))
 $(shell go install golang.org/x/tools/cmd/goimports@latest)
@@ -49,4 +49,10 @@ test-unit: ## Run unit tests
 test: test-unit ## Run tests.
 
 .PHONY: build
-build: generate-ebpf fmt vet
+build: generate-ebpf fmt vet build-bpfverify
+
+.PHONY: build-bpfverify
+build-bpfverify: ## Build bpfverify for amd64 and arm64 (static, output to dist/)
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags='-s -w' -o dist/varmor-bpfverify-linux-amd64 ./cmd/bpfverify
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags='-s -w' -o dist/varmor-bpfverify-linux-arm64 ./cmd/bpfverify
+	@echo "Built: dist/varmor-bpfverify-linux-amd64, dist/varmor-bpfverify-linux-arm64"
